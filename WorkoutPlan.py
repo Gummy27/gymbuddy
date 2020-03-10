@@ -35,3 +35,6 @@ class Aefing():
 
     def __str__(self):
         return f"{self.name}: {self.reps} reps og {self.sets} sets."
+
+def greinaskil():
+    print("------------------------")

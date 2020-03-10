@@ -1,52 +1,49 @@
 from tkinter import *
-import WorkoutPlan
+from WorkoutPlan import WorkoutPlan
 
-def bua_til_aefingar(name, reps, sets):
-    with open("aefingar.json", 'a+') as json_file:
-        x = {
-            "name": name,
-            "sets": sets,
-            "reps": reps
-        }
-        json.dump(x, json_file)
+class Exercise_navigator():
+    def __init__(self, size):
+        self.index = 0
+        self.size = size
 
-def greinaskil():
-    print("------------------------")
+    def next(self):
+        if self.index + 1 < self.size:
+            self.index += 1
 
-test = WorkoutPlan()
+    def back(self):
+        if self.index - 1 > 0:
+            self.index -= 1
 
-production = False
-while production:
-    select = int(input("Hvaða dag ertu á? : "))
-    if select == 0:
-        break
-    else:
-        aefingar = test.day(select-1)
-        index = 0
-    while True:
-        arrows = input("Next or Back or Done? : ").lower()
-        if arrows == "back":
-            if index-1 >= 0:
-                index -= 1
-                print(aefingar[index])
-            else:
-                print("this is not a valid action")
-        elif arrows == "next":
-            if index+1 < len(aefingar):
-                index += 1
-                print(aefingar[index])
-
-            else:
-                print("this is not a valid action")
-        if arrows == "done":
-            break
-        greinaskil()
+workout = WorkoutPlan()
 
 win = Tk()
-frameControls = Frame(win)
-frameControls.grid(row=1)
+win.geometry("300x500")
 
+banner = Label(win, text="This is a banner")
+banner.pack(fill=Y)
 
+# Valmynd yfir hvaða dag þú ert á í planinu.
+days_frame = Frame(win)
+
+days_buttons = []
+for x in range(len(workout.days)):
+    button = Button(days_frame, text=f"Day {x}")
+    button.pack(fill=Y)
+    days_buttons.append(button)
+
+# Æfingin sem þú ert á
+exercise_frame = Frame(win)
+
+index = 0
+exercise_label = Label(exercise_frame, text=workout.days[0][index])
+exercise_label.pack()
+
+navigator = Exercise_navigator(len(workout.days[0]))
+
+back_button = Button(exercise_frame, text="Back", command=navigator.back)
+back_button.pack()
+
+exercise_frame.pack()
 
 win.mainloop()
 
