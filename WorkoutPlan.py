@@ -3,7 +3,7 @@ import csv
 class WorkoutPlan():
     def __init__(self):
         self.days = []
-        with open('file.csv', 'r') as f:
+        with open('Data/file.csv', 'r') as f:
             for index, x in enumerate(f.read().split('\n')):
                 self.days.append([])
                 for aefing in x.split(',')[:-1]:
